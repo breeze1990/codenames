@@ -1,15 +1,30 @@
-class Game {
-  constructor(name) {
+import { Team } from './constants';
+
+export class Game {
+  constructor(name, words) {
     this.name = name;
+    this.words = words;
   }
 
-  name = "";
+  name = '';
   players = [];
   teamRed = [];
   teamBlue = [];
   observers = [];
+  activeTeam = Team.RED; // red|blue
+  words;
+
+  addPlayer(player) {
+    this.players.push(player);
+  }
 }
 
-class Player {
-  name = "";
+export class Player {
+  id = '';
+  name = '';
+
+  constructor(id, name) {
+    this.id = id;
+    this.name = name;
+  }
 }
