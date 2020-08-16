@@ -23,5 +23,10 @@
     "eslint": "^7.6.0",
     "eslint-config-strongloop": "^2.1.0",
     "nodemon": "^2.0.4"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "semi": true,
+    "singleQuote": true
   }
 }
