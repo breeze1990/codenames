@@ -13,4 +13,15 @@ export default class GameStore {
     this.game[room].addPlayer(new Player(user));
     return this.game[room];
   }
+
+  getGame(room) {
+    return this.game[room];
+  }
+
+  leaveGame(userId, room) {
+    if (!this.game[room]) {
+      return;
+    }
+    this.game[room].removePlayer(userId);
+  }
 }

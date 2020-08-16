@@ -1,3 +1,4 @@
+import { remove, extend } from 'lodash';
 import { Team } from './constants';
 
 export class Game {
@@ -17,14 +18,18 @@ export class Game {
   addPlayer(player) {
     this.players.push(player);
   }
+
+  removePlayer(id) {
+    console.log(this.players, id);
+    remove(this.players, (p) => p.id === id);
+  }
 }
 
 export class Player {
   id = '';
   name = '';
 
-  constructor(id, name) {
-    this.id = id;
-    this.name = name;
+  constructor(player) {
+    extend(this, player);
   }
 }

@@ -6,6 +6,7 @@ const socketIO = require('socket.io');
 const cookie = require('cookie');
 
 import * as gameDao from './dao/gameDao';
+import * as socketStore from './store/socketStore';
 
 const app = express();
 const port = 3000;
@@ -47,27 +48,40 @@ const io = socketIO(httpServer, {
   path: '/ws',
 });
 io.on('connection', (socket) => {
-  console.log(`${socket.id} a user connected`);
+  const socketId = socket.id;
+  console.log(`${socketId} a user connected`);
   const cookies = cookie.parse(socket.request.headers.cookie || '');
   let userName = 'anonymous';
   if (cookies.codenames_user) {
     userName = cookies.codenames_user;
   }
-  console.log(cookies);
+  socketStore.add(socketId, {
+    id: socketId,
+    userName,
+  });
   socket.on('disconnect', () => {
-    console.log('a user disconnected');
+    console.log(`${socketId} disconnected`);
+    const socketData = socketStore.remove(socketId);
+    console.log(socketData);
+    gameDao.leaveGame(socketId, socketData.roomName);
+    socket.leave(socketData.roomName);
   });
   socket.on('join_room', (data) => {
+    const roomName = data.name;
     console.log(data);
     socket.join(data.name, () => {
-      console.log(`${socket.id} joined ${data.name}`);
+      console.log(`${socket.id} joined ${roomName}`);
       gameDao.joinGame(
         {
           id: socket.id,
           name: userName,
         },
-        data.name
+        roomName
       );
+      io.to(roomName).emit('game_update', gameDao.getGameByName(roomName));
+    });
+    socketStore.add(socketId, {
+      roomName,
     });
   });
 });

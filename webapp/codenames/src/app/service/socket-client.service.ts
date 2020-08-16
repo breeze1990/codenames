@@ -13,6 +13,9 @@ export class SocketClientService {
     this.socket.emit('join_room', {
       name: name,
     });
+    this.socket.on('game_update', (data) => {
+      console.log(data);
+    });
   }
   getMessage() {
     return this.socket.fromEvent('message').pipe(map((data: any) => data.msg));
