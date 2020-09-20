@@ -8,7 +8,7 @@ export class Game {
   }
 
   name = '';
-  players = [];
+  players = {};
   teamRed = [];
   teamBlue = [];
   observers = [];
@@ -16,12 +16,40 @@ export class Game {
   words;
 
   addPlayer(player) {
-    this.players.push(player);
+    this.players[player.id] = player;
+    this.observers.push(player.id);
   }
 
   removePlayer(id) {
-    console.log(this.players, id);
-    remove(this.players, (p) => p.id === id);
+    delete this.players[id];
+    this.observers.splice(this.observers.indexOf(id), 1);
+    this.teamRed.splice(this.teamRed.indexOf(id), 1);
+    this.teamBlue.splice(this.teamBlue.indexOf(id), 1);
+  }
+
+  updatePlayer(data) {
+    this.players[data.id] = extend(this.players[data.id], data);
+  }
+
+  json() {
+    const words = [];
+    let i = 0;
+    for (let row of this.words) {
+      words.push([]);
+      for (let word of row) {
+        words[i].push(word.json());
+      }
+      i++;
+    }
+    return {
+      name: this.name,
+      players: this.players,
+      teamRed: this.teamRed,
+      teamBlue: this.teamBlue,
+      observers: this.observers,
+      activeTeam: Team.str(this.activeTeam),
+      words,
+    };
   }
 }
 

@@ -62,13 +62,14 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`${socketId} disconnected`);
     const socketData = socketStore.remove(socketId);
+    const roomName = socketData.roomName;
     console.log(socketData);
     gameDao.leaveGame(socketId, socketData.roomName);
     socket.leave(socketData.roomName);
+    io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
   });
   socket.on('join_room', (data) => {
     const roomName = data.name;
-    console.log(data);
     socket.join(data.name, () => {
       console.log(`${socket.id} joined ${roomName}`);
       gameDao.joinGame(
@@ -78,10 +79,22 @@ io.on('connection', (socket) => {
         },
         roomName
       );
-      io.to(roomName).emit('game_update', gameDao.getGameByName(roomName));
+      io.to(roomName).emit(
+        'game_update',
+        gameDao.getGameByName(roomName).json()
+      );
     });
     socketStore.add(socketId, {
       roomName,
     });
+  });
+  socket.on('update_name', (name) => {
+    const socketData = socketStore.remove(socketId);
+    const roomName = socketData.roomName;
+    gameDao.getGameByName(roomName).updatePlayer({
+      id: socketId,
+      name,
+    });
+    io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
   });
 });

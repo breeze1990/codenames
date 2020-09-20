@@ -29,7 +29,12 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "allowedCommonJsDependencies": ["socket.io-client"]
+            "allowedCommonJsDependencies": [
+              "socket.io-client",
+              "debug",
+              "socket.io-parser",
+              "lodash"
+            ]
           },
           "configurations": {
             "production": {

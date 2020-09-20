@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  .word-section {
+    flex: 1 1 80%;
+    .row {
+      display: flex;
+      .cell {
+        flex: 0 0 200px;
+      }
+    }
+  }
+  .player-section {
+    flex: 0 0 300px;
+  }
+}

@@ -7,6 +7,11 @@ import { RoomOverviewComponent } from './room-overview/room-overview.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RoomComponent } from './room/room.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { StoreModule } from '@ngrx/store';
+import { roomReducer } from './room/toom.reducer';
+import { CookieService } from 'ngx-cookie-service';
+import { MaterialModule } from './material-module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const config: SocketIoConfig = {
   url: 'http://localhost:3000',
@@ -21,9 +26,14 @@ const config: SocketIoConfig = {
     BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
+    ReactiveFormsModule,
+    MaterialModule,
     SocketIoModule.forRoot(config),
+    StoreModule.forRoot({
+      room: roomReducer,
+    }),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

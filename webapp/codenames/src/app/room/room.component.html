@@ -1,4 +1,39 @@
 <div *ngIf="name === ''">room {{ name }} loading</div>
 <div *ngIf="name !== ''">
-  loaded
+  <div [hidden]="true">
+    {{ room$ | async | json }}
+  </div>
+  <div class="container">
+    <div class="word-section">
+      <div class="row" *ngFor="let row of room.words">
+        <div class="cell" *ngFor="let cell of row">
+          <div [ngClass]="{ selected: cell.selected }">{{ cell.text }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="player-section">
+      <div>
+        Hello {{ userName }}
+        <mat-icon (click)="showUserNameInput()" class="clickable"
+          >create
+        </mat-icon>
+      </div>
+      <div *ngIf="userNameInputSwitch">
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="user name"
+            [formControl]="userNameInput"
+          />
+        </mat-form-field>
+        <button mat-button (click)="updateUserName()">Submit</button>
+      </div>
+      <div>
+        <div>Observers</div>
+        <div *ngFor="let obId of room.observers">
+          {{ room.players[obId].name }}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
