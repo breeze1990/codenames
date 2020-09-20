@@ -56,7 +56,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   updateUserName() {
     this.userName = this.userNameInput.value;
-    this.cookie.set(USER_NAME_COOKIE, this.userName);
+    this.cookie.set(USER_NAME_COOKIE, this.userName, null, '/');
     this.userNameInputSwitch = false;
     this.socket.updateUserName(this.userName);
   }

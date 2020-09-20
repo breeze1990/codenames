@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
     });
   });
   socket.on('update_name', (name) => {
-    const socketData = socketStore.remove(socketId);
+    const socketData = socketStore.get(socketId);
     const roomName = socketData.roomName;
     gameDao.getGameByName(roomName).updatePlayer({
       id: socketId,

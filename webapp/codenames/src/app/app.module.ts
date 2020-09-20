@@ -14,7 +14,7 @@ import { MaterialModule } from './material-module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 const config: SocketIoConfig = {
-  url: 'http://localhost:3000',
+  url: '',
   options: {
     path: '/ws',
   },
