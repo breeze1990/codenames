@@ -63,15 +63,18 @@ io.on('connection', (socket) => {
     console.log(`${socketId} disconnected`);
     const socketData = socketStore.remove(socketId);
     const roomName = socketData.roomName;
-    console.log(socketData);
-    gameDao.leaveGame(socketId, socketData.roomName);
-    socket.leave(socketData.roomName);
+    log.info('disconnected: %s', socketData);
+    if (!roomName) {
+      return;
+    }
+    gameDao.leaveGame(socketId, roomName);
+    socket.leave(roomName);
     io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
   });
   socket.on('join_room', (data) => {
     const roomName = data.name;
     socket.join(data.name, () => {
-      console.log(`${socket.id} joined ${roomName}`);
+      log.info(`${socket.id} joined ${roomName}`);
       gameDao.joinGame(
         {
           id: socket.id,
@@ -94,6 +97,26 @@ io.on('connection', (socket) => {
     gameDao.getGameByName(roomName).updatePlayer({
       id: socketId,
       name,
+    });
+    io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
+  });
+  socket.on('join_team', (data) => {
+    const { team } = data;
+    const socketData = socketStore.get(socketId);
+    const roomName = socketData.roomName;
+    gameDao.getGameByName(roomName).joinTeam({
+      id: socketId,
+      team,
+    });
+    io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
+  });
+  socket.on('commandeer_team', (data) => {
+    const { team } = data;
+    const socketData = socketStore.get(socketId);
+    const roomName = socketData.roomName;
+    gameDao.getGameByName(roomName).commandeerTeam({
+      id: socketId,
+      team,
     });
     io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
   });

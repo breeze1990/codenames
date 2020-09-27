@@ -22,6 +22,19 @@ export class SocketClientService {
     });
   }
 
+  joinTeam(team: string) {
+    this.socket.emit('join_team', {
+      team,
+    });
+  }
+
+  commandeer(team: string) {
+    console.log('sent');
+    this.socket.emit('commandeer_team', {
+      team,
+    });
+  }
+
   getMessage() {
     return this.socket.fromEvent('message').pipe(map((data: any) => data.msg));
   }

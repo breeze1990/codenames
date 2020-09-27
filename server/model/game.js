@@ -10,7 +10,9 @@ export class Game {
   name = '';
   players = {};
   teamRed = [];
+  teamRedCaptain = '';
   teamBlue = [];
+  teamBlueCaptain = '';
   observers = [];
   activeTeam = Team.RED; // red|blue
   words;
@@ -27,8 +29,48 @@ export class Game {
     this.teamBlue.splice(this.teamBlue.indexOf(id), 1);
   }
 
+  removePlayerFromTeam(id) {
+    this.observers.splice(this.observers.indexOf(id), 1);
+    this.teamRed.splice(this.teamRed.indexOf(id), 1);
+    this.teamBlue.splice(this.teamBlue.indexOf(id), 1);
+    if (!this.teamRed.includes(this.teamRedCaptain)) {
+      this.teamRedCaptain = '';
+    }
+    if (!this.teamBlue.includes(this.teamBlueCaptain)) {
+      this.teamBlueCaptain = '';
+    }
+  }
+
   updatePlayer(data) {
     this.players[data.id] = extend(this.players[data.id], data);
+  }
+
+  joinTeam({ id, team }) {
+    this.removePlayerFromTeam(id);
+    switch (team) {
+      case 'red':
+        this.teamRed.push(id);
+        break;
+      case 'blue':
+        this.teamBlue.push(id);
+        break;
+      case 'ob':
+        this.observers.push(id);
+        break;
+    }
+  }
+
+  commandeerTeam({ id, team }) {
+    let players = team === 'red' ? this.teamRed : this.teamBlue;
+    if (!players.includes(id)) {
+      // not in the team, cannot commandeer
+      return;
+    }
+    if (team === 'red') {
+      this.teamRedCaptain = id;
+    } else if (team === 'blue') {
+      this.teamBlueCaptain = id;
+    }
   }
 
   json() {
@@ -45,7 +87,9 @@ export class Game {
       name: this.name,
       players: this.players,
       teamRed: this.teamRed,
+      teamRedCaptain: this.teamRedCaptain,
       teamBlue: this.teamBlue,
+      teamBlueCaptain: this.teamBlueCaptain,
       observers: this.observers,
       activeTeam: Team.str(this.activeTeam),
       words,

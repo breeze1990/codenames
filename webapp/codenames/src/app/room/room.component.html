@@ -29,9 +29,48 @@
         <button mat-button (click)="updateUserName()">Submit</button>
       </div>
       <div>
-        <div>Observers</div>
+        <mat-toolbar>
+          <button mat-icon-button (click)="joinTeam('ob')">
+            <mat-icon>group_add</mat-icon>
+          </button>
+          <span>Observers</span>
+        </mat-toolbar>
         <div *ngFor="let obId of room.observers">
           {{ room.players[obId].name }}
+        </div>
+      </div>
+      <div>
+        <mat-toolbar>
+          <button mat-icon-button (click)="joinTeam('red')">
+            <mat-icon>group_add</mat-icon>
+          </button>
+          <span>Team Red</span>
+          <span class="spacer"></span>
+          <button mat-icon-button (click)="commandeer('red')">
+            <mat-icon>flag</mat-icon>
+          </button>
+        </mat-toolbar>
+        <div *ngFor="let id of room.teamRed">
+          <div>
+            {{ room.players[id].name }}
+            <mat-icon *ngIf="id === room.teamRedCaptain"> star </mat-icon>
+          </div>
+        </div>
+      </div>
+      <div>
+        <mat-toolbar>
+          <button mat-icon-button (click)="joinTeam('blue')">
+            <mat-icon>group_add</mat-icon>
+          </button>
+          <span>Team Blue</span>
+          <span class="spacer"></span>
+          <button mat-icon-button (click)="commandeer('blue')">
+            <mat-icon>flag</mat-icon>
+          </button>
+        </mat-toolbar>
+        <div *ngFor="let id of room.teamBlue">
+          {{ room.players[id].name }}
+          <mat-icon *ngIf="id === room.teamBlueCaptain"> star </mat-icon>
         </div>
       </div>
     </div>

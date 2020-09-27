@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { RoomMetadata } from './room.model';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl } from '@angular/forms';
+import { find } from 'lodash';
 
 export const USER_NAME_COOKIE = 'codenames_user';
 
@@ -52,6 +53,26 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   showUserNameInput() {
     this.userNameInputSwitch = true;
+  }
+
+  joinTeam(team) {
+    this.socket.joinTeam(team);
+  }
+
+  commandeer(team) {
+    let teamPlayers = [];
+    if (team === 'red') {
+      teamPlayers = this.room.teamRed;
+    }
+    if (team === 'blue') {
+      teamPlayers = this.room.teamBlue;
+    }
+    let me = find(this.room.players, (p) => p.name === this.userName);
+    if (!find(teamPlayers, (id) => id === me.id)) {
+      // not in the team, cannot commandeer
+      return;
+    }
+    this.socket.commandeer(team);
   }
 
   updateUserName() {

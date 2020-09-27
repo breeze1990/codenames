@@ -3,7 +3,7 @@ import { extend } from 'lodash';
 export class RoomMetadata {
   name: string = '';
   observers: Player[] = [];
-  players: Player[] = [];
+  players: { [id: string]: Player } = {};
   teamBlue: Player[] = [];
   teamRed: Player[] = [];
   words: string[][] = [];
