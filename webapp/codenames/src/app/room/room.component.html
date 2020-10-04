@@ -6,8 +6,22 @@
   <div class="container">
     <div class="word-section">
       <div class="row" *ngFor="let row of room.words">
-        <div class="cell" *ngFor="let cell of row">
-          <div [ngClass]="{ selected: cell.selected }">{{ cell.text }}</div>
+        <div
+          class="cell"
+          [ngClass]="{ captain: isCaptain }"
+          *ngFor="let cell of row"
+        >
+          <div
+            [ngClass]="{
+              selected: cell.selected,
+              red: cell.team === 'red',
+              blue: cell.team === 'blue',
+              neutral: cell.team === 'neutral',
+              assassin: cell.team === 'assassin'
+            }"
+          >
+            {{ cell.text }}
+          </div>
         </div>
       </div>
     </div>

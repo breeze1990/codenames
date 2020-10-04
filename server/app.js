@@ -55,6 +55,7 @@ io.on('connection', (socket) => {
   if (cookies.codenames_user) {
     userName = cookies.codenames_user;
   }
+  socket.emit('socket_id', socket.id);
   socketStore.add(socketId, {
     id: socketId,
     userName,

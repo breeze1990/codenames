@@ -5,7 +5,30 @@
     .row {
       display: flex;
       .cell {
-        flex: 0 0 200px;
+        flex: 1 1 200px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        padding: 5px;
+        div {
+          background-color: #efefef;
+        }
+
+        &.captain {
+          .red {
+            color: red;
+          }
+          .blue {
+            color: blue;
+          }
+          .assassin {
+            background-color: grey;
+            color: white;
+          }
+          div {
+            cursor: not-allowed;
+          }
+        }
       }
     }
   }

@@ -10,7 +10,13 @@ import { roomUpdate } from '../room/room.actions';
   providedIn: 'root',
 })
 export class SocketClientService {
-  constructor(private socket: Socket, private store: Store<{ room: any }>) {}
+  public socketId: any;
+  constructor(private socket: Socket, private store: Store<{ room: any }>) {
+    this.socket.on('socket_id', (id) => {
+      console.log(id);
+      this.socketId = id;
+    });
+  }
 
   join(name: string) {
     this.socket.emit('join_room', {
@@ -29,7 +35,6 @@ export class SocketClientService {
   }
 
   commandeer(team: string) {
-    console.log('sent');
     this.socket.emit('commandeer_team', {
       team,
     });

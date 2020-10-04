@@ -24,15 +24,19 @@ export class Game {
 
   removePlayer(id) {
     delete this.players[id];
-    this.observers.splice(this.observers.indexOf(id), 1);
-    this.teamRed.splice(this.teamRed.indexOf(id), 1);
-    this.teamBlue.splice(this.teamBlue.indexOf(id), 1);
+    this.removePlayerFromTeam(id);
   }
 
   removePlayerFromTeam(id) {
-    this.observers.splice(this.observers.indexOf(id), 1);
-    this.teamRed.splice(this.teamRed.indexOf(id), 1);
-    this.teamBlue.splice(this.teamBlue.indexOf(id), 1);
+    if (this.observers.indexOf(id) > -1) {
+      this.observers.splice(this.observers.indexOf(id), 1);
+    }
+    if (this.teamRed.indexOf(id) > -1) {
+      this.teamRed.splice(this.teamRed.indexOf(id), 1);
+    }
+    if (this.teamBlue.indexOf(id) > -1) {
+      this.teamBlue.splice(this.teamBlue.indexOf(id), 1);
+    }
     if (!this.teamRed.includes(this.teamRedCaptain)) {
       this.teamRedCaptain = '';
     }
@@ -67,9 +71,17 @@ export class Game {
       return;
     }
     if (team === 'red') {
-      this.teamRedCaptain = id;
+      if (this.teamRedCaptain === id) {
+        this.teamRedCaptain = '';
+      } else {
+        this.teamRedCaptain = id;
+      }
     } else if (team === 'blue') {
-      this.teamBlueCaptain = id;
+      if (this.teamBlueCaptain === id) {
+        this.teamBlueCaptain = '';
+      } else {
+        this.teamBlueCaptain = id;
+      }
     }
   }
 

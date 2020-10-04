@@ -2,6 +2,7 @@ export const Team = Object.freeze({
   RED: Symbol('red'),
   BLUE: Symbol('blue'),
   NEUTRAL: Symbol('neutral'),
+  ASSASSIN: Symbol('assassin'),
   of: (str) => Symbol(str),
   str: (team) => {
     switch (team) {
@@ -11,6 +12,8 @@ export const Team = Object.freeze({
         return 'blue';
       case Team.NEUTRAL:
         return 'neutral';
+      case Team.ASSASSIN:
+        return 'assassin';
     }
   },
 });

@@ -1,5 +1,5 @@
-import Word from "../model/word";
-import { Team } from "../model/constants";
+import Word from '../model/word';
+import { Team } from '../model/constants';
 
 export function getWords(row, col) {
   const total = row * col;
@@ -12,6 +12,7 @@ export function getWords(row, col) {
   for (let j = red; j < red + blue; j++) {
     teamAssign[j] = Team.BLUE;
   }
+  teamAssign[red + blue] = Team.ASSASSIN;
   teamAssign = shuffle(teamAssign, total);
   const words = [];
   for (let i = 0; i < row; i++) {

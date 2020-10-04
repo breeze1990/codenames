@@ -23,6 +23,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   room: RoomMetadata = new RoomMetadata({});
   _subscriptions = new Subscription();
   userNameInputSwitch = false;
+  isCaptain = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,6 +37,9 @@ export class RoomComponent implements OnInit, OnDestroy {
     this._subscriptions.add(
       this.room$.subscribe((room) => {
         this.room = room;
+        this.isCaptain =
+          this.socket.socketId === room.teamRedCaptain ||
+          this.socket.socketId === room.teamBlueCaptain;
       })
     );
   }
@@ -61,15 +65,22 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   commandeer(team) {
     let teamPlayers = [];
+    let captain = '';
     if (team === 'red') {
       teamPlayers = this.room.teamRed;
+      captain = this.room.teamRedCaptain;
     }
     if (team === 'blue') {
       teamPlayers = this.room.teamBlue;
+      captain = this.room.teamBlueCaptain;
     }
     let me = find(this.room.players, (p) => p.name === this.userName);
     if (!find(teamPlayers, (id) => id === me.id)) {
       // not in the team, cannot commandeer
+      return;
+    }
+    if (captain && captain !== this.socket.socketId) {
+      // someone else is captain, cannot commandeer
       return;
     }
     this.socket.commandeer(team);
