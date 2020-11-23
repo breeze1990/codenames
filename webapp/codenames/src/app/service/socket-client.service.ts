@@ -13,7 +13,7 @@ export class SocketClientService {
   public socketId: any;
   constructor(private socket: Socket, private store: Store<{ room: any }>) {
     this.socket.on('socket_id', (id) => {
-      console.log(id);
+      console.log('id', id);
       this.socketId = id;
     });
   }
@@ -23,7 +23,6 @@ export class SocketClientService {
       name: name,
     });
     this.socket.on('game_update', (data) => {
-      console.log(data);
       this.store.dispatch(roomUpdate(data));
     });
   }
@@ -46,5 +45,13 @@ export class SocketClientService {
 
   updateUserName(name) {
     this.socket.emit('update_name', name);
+  }
+
+  selectWord(word) {
+    this.socket.emit('select_word', word);
+  }
+
+  nextGame() {
+    this.socket.emit('next_game');
   }
 }

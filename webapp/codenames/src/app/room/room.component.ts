@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { SocketClientService } from '../service/socket-client.service';
 import { Store, select } from '@ngrx/store';
-import { RoomMetadata } from './room.model';
+import { RoomMetadata, Word } from './room.model';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl } from '@angular/forms';
 import { find } from 'lodash';
@@ -91,5 +91,29 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.cookie.set(USER_NAME_COOKIE, this.userName, null, '/');
     this.userNameInputSwitch = false;
     this.socket.updateUserName(this.userName);
+  }
+
+  selectCard(cell: Word) {
+    if (cell.selected) {
+      return;
+    }
+    let me = find(this.room.players, (p) => p.name === this.userName);
+    if (
+      me.name === this.room.teamBlueCaptain ||
+      me.name === this.room.teamRedCaptain
+    ) {
+      return;
+    }
+    const allowed =
+      this.room.activeTeam === 'red' ? this.room.teamRed : this.room.teamBlue;
+    console.log(allowed, me);
+    if (!allowed.includes(me.id)) {
+      return;
+    }
+    this.socket.selectWord(cell.text);
+  }
+
+  nextGame() {
+    this.socket.nextGame();
   }
 }

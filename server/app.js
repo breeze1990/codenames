@@ -7,6 +7,7 @@ const cookie = require('cookie');
 
 import * as gameDao from './dao/gameDao';
 import * as socketStore from './store/socketStore';
+import { getWords } from './dao/randomWords';
 
 const app = express();
 const port = 3000;
@@ -119,6 +120,24 @@ io.on('connection', (socket) => {
       id: socketId,
       team,
     });
+    io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
+  });
+  socket.on('select_word', (word) => {
+    const socketData = socketStore.get(socketId);
+    const roomName = socketData.roomName;
+    gameDao.getGameByName(roomName).selectWord({
+      id: socketId,
+      word,
+    });
+    io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
+  });
+  socket.on('next_game', () => {
+    const socketData = socketStore.get(socketId);
+    const roomName = socketData.roomName;
+
+    const words = getWords(5, 5);
+
+    gameDao.getGameByName(roomName).reset(words);
     io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
   });
 });

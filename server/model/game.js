@@ -1,6 +1,9 @@
 import { remove, extend } from 'lodash';
 import { Team } from './constants';
 
+/**
+ *
+ */
 export class Game {
   constructor(name, words) {
     this.name = name;
@@ -15,7 +18,15 @@ export class Game {
   teamBlueCaptain = '';
   observers = [];
   activeTeam = Team.RED; // red|blue
+  /**
+   * Word[][]
+   */
   words;
+
+  reset(words) {
+    this.words = words;
+    this.activeTeam = Team.RED;
+  }
 
   addPlayer(player) {
     this.players[player.id] = player;
@@ -81,6 +92,17 @@ export class Game {
         this.teamBlueCaptain = '';
       } else {
         this.teamBlueCaptain = id;
+      }
+    }
+  }
+
+  selectWord({ id, word }) {
+    // TODO: check to change activeTeam
+    for (let row of this.words) {
+      for (let item of row) {
+        if (item.text === word) {
+          item.selected = true;
+        }
       }
     }
   }

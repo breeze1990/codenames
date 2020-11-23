@@ -3,12 +3,16 @@
   <div [hidden]="true">
     {{ room$ | async | json }}
   </div>
+  <div>
+    {{ room.activeTeam }}
+  </div>
   <div class="container">
     <div class="word-section">
       <div class="row" *ngFor="let row of room.words">
         <div
           class="cell"
           [ngClass]="{ captain: isCaptain }"
+          (click)="selectCard(cell)"
           *ngFor="let cell of row"
         >
           <div
@@ -86,6 +90,9 @@
           {{ room.players[id].name }}
           <mat-icon *ngIf="id === room.teamBlueCaptain"> star </mat-icon>
         </div>
+      </div>
+      <div>
+        <button mat-button (click)="nextGame()">Next</button>
       </div>
     </div>
   </div>

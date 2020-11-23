@@ -10,6 +10,7 @@
         line-height: 50px;
         text-align: center;
         padding: 5px;
+        cursor: pointer;
         div {
           background-color: #efefef;
         }
@@ -17,9 +18,17 @@
         &.captain {
           .red {
             color: red;
+            &.selected {
+              color: white;
+              background-color: red;
+            }
           }
           .blue {
             color: blue;
+            &.selected {
+              color: white;
+              background-color: blue;
+            }
           }
           .assassin {
             background-color: grey;
@@ -27,6 +36,31 @@
           }
           div {
             cursor: not-allowed;
+          }
+        }
+
+        .red {
+          &.selected {
+            color: white;
+            background-color: red;
+          }
+        }
+        .blue {
+          &.selected {
+            color: white;
+            background-color: blue;
+          }
+        }
+        .assassin {
+          &.selected {
+            background-color: black;
+            color: white;
+          }
+        }
+        .neutral {
+          &.selected {
+            background-color: darkgray;
+            color: white;
           }
         }
       }

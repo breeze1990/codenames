@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RoomComponent } from './room/room.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { StoreModule } from '@ngrx/store';
-import { roomReducer } from './room/toom.reducer';
+import { roomReducer } from './room/room.reducer';
 import { CookieService } from 'ngx-cookie-service';
 import { MaterialModule } from './material-module';
 import { ReactiveFormsModule } from '@angular/forms';

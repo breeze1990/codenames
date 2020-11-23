@@ -13,7 +13,6 @@ export const roomState: RoomMetadata = new RoomMetadata({
 const _roomReducer = createReducer(
   roomState,
   on(roomUpdate, (state, room) => {
-    console.log(room);
     return extend({}, state, room);
   })
 );
