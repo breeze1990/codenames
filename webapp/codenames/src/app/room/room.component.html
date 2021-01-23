@@ -1,30 +1,32 @@
 <div *ngIf="name === ''">room {{ name }} loading</div>
-<div *ngIf="name !== ''">
+<div *ngIf="name !== ''" class="room-container">
   <div [hidden]="true">
     {{ room$ | async | json }}
   </div>
-  <div>
-    {{ room.activeTeam }}
-  </div>
   <div class="container">
     <div class="word-section">
-      <div class="row" *ngFor="let row of room.words">
-        <div
-          class="cell"
-          [ngClass]="{ captain: isCaptain }"
-          (click)="selectCard(cell)"
-          *ngFor="let cell of row"
-        >
+      <div class="turn-information" [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}">
+        {{ room.activeTeam }}
+      </div>
+      <div class="word-cells">
+        <div class="row" *ngFor="let row of room.words">
           <div
-            [ngClass]="{
-              selected: cell.selected,
-              red: cell.team === 'red',
-              blue: cell.team === 'blue',
-              neutral: cell.team === 'neutral',
-              assassin: cell.team === 'assassin'
-            }"
+            class="cell"
+            [ngClass]="{ captain: isCaptain }"
+            (click)="selectCard(cell)"
+            *ngFor="let cell of row"
           >
-            {{ cell.text }}
+            <div
+              [ngClass]="{
+                selected: cell.selected,
+                red: cell.team === 'red',
+                blue: cell.team === 'blue',
+                neutral: cell.team === 'neutral',
+                assassin: cell.team === 'assassin'
+              }"
+            >
+              {{ cell.text }}
+            </div>
           </div>
         </div>
       </div>

@@ -26,7 +26,9 @@ export function getWords(row, col) {
       );
     }
   }
-  return words;
+  return new Promise((resolve, reject) => {
+    resolve(words);
+  });
 }
 
 function shuffle(arr, total) {

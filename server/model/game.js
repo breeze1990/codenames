@@ -98,12 +98,19 @@ export class Game {
 
   selectWord({ id, word }) {
     // TODO: check to change activeTeam
+    let itemTeam;
     for (let row of this.words) {
       for (let item of row) {
         if (item.text === word) {
           item.selected = true;
+          itemTeam = item.team;
         }
       }
+    }
+    if (this.activeTeam === Team.RED && itemTeam === Team.BLUE) {
+      this.activeTeam = Team.BLUE;
+    } else if (this.activeTeam === Team.BLUE && itemTeam === Team.RED) {
+      this.activeTeam = Team.RED;
     }
   }
 

@@ -48,6 +48,8 @@ const httpServer = app.listen(port, () => {
 const io = socketIO(httpServer, {
   path: '/ws',
 });
+gameDao.gameStore.setSocketIo(io);
+
 io.on('connection', (socket) => {
   const socketId = socket.id;
   console.log(`${socketId} a user connected`);
@@ -76,7 +78,7 @@ io.on('connection', (socket) => {
   socket.on('join_room', (data) => {
     const roomName = data.name;
     socket.join(data.name, () => {
-      log.info(`${socket.id} joined ${roomName}`);
+      log.info(`${socket.id}:${userName} joined ${roomName}`);
       gameDao.joinGame(
         {
           id: socket.id,
