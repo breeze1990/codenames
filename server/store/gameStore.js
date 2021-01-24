@@ -8,7 +8,7 @@ export default class GameStore {
   joinGame(user, room) {
     const self = this;
     if (!this.game[room]) {
-      this.game[room] = new Game(room, []);
+      this.game[room] = new Game(room, [[]]);
       const words = getWords(5, 5).then(words => {
         self.game[room].reset(words);
         self.io.to(room).emit('game_update', self.game[room].json());
