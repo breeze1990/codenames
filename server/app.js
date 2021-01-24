@@ -19,9 +19,13 @@ const log = require('./config/loggerFactory').getLogger(
 app.use(express.json());
 app.use('/static', express.static('public'));
 app.use('/lib', express.static('node_modules'));
-
 app.get('/health', (req, res) => {
   res.send('Hello Codenames!');
+});
+app.use('/codename', express.static(path.resolve('../webapp/codenames/dist/codenames')));
+
+app.get('/codename/*', (req, res) => {
+  res.sendFile('index.html', { root: path.resolve('../webapp/codenames/dist/codenames') })
 });
 
 glob('./controller/**/*', async (err, res) => {
