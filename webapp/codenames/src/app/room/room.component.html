@@ -5,26 +5,21 @@
   </div>
   <div class="container">
     <div class="word-section">
-      <div class="turn-information" [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}">
-        {{ room.activeTeam }}
+      <div class="turn-information">
+        <div [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}">{{ room.activeTeam }}</div>
+        <button mat-stroked-button (click)="endTurn()"
+          [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}">End</button>
       </div>
       <div class="word-cells">
         <div class="row" *ngFor="let row of room.words">
-          <div
-            class="cell"
-            [ngClass]="{ captain: isCaptain }"
-            (click)="selectCard(cell)"
-            *ngFor="let cell of row"
-          >
-            <div
-              [ngClass]="{
+          <div class="cell" [ngClass]="{ captain: isCaptain }" (click)="selectCard(cell)" *ngFor="let cell of row">
+            <div [ngClass]="{
                 selected: cell.selected,
                 red: cell.team === 'red',
                 blue: cell.team === 'blue',
                 neutral: cell.team === 'neutral',
                 assassin: cell.team === 'assassin'
-              }"
-            >
+              }">
               {{ cell.text }}
             </div>
           </div>
@@ -34,17 +29,12 @@
     <div class="player-section">
       <div>
         Hello {{ userName }}
-        <mat-icon (click)="showUserNameInput()" class="clickable"
-          >create
+        <mat-icon (click)="showUserNameInput()" class="clickable">create
         </mat-icon>
       </div>
       <div *ngIf="userNameInputSwitch">
         <mat-form-field class="example-full-width">
-          <input
-            matInput
-            placeholder="user name"
-            [formControl]="userNameInput"
-          />
+          <input matInput placeholder="user name" [formControl]="userNameInput" />
         </mat-form-field>
         <button mat-button (click)="updateUserName()">Submit</button>
       </div>

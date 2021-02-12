@@ -108,11 +108,15 @@ export class Game {
       }
     }
     if (this.activeTeam !== itemTeam) {
-      if (this.activeTeam === Team.BLUE) {
-        this.activeTeam = Team.RED;
-      } else {
-        this.activeTeam = Team.BLUE
-      }
+      this.switchTurn();
+    }
+  }
+
+  switchTurn() {
+    if (this.activeTeam === Team.BLUE) {
+      this.activeTeam = Team.RED;
+    } else {
+      this.activeTeam = Team.BLUE
     }
   }
 

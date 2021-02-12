@@ -145,4 +145,10 @@ io.on('connection', (socket) => {
       io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
     });
   });
+  socket.on('next_turn', () => {
+    const socketData = socketStore.get(socketId);
+    const roomName = socketData.roomName;
+    gameDao.getGameByName(roomName).switchTurn();
+    io.to(roomName).emit('game_update', gameDao.getGameByName(roomName).json());
+  })
 });

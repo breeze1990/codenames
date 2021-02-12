@@ -116,4 +116,16 @@ export class RoomComponent implements OnInit, OnDestroy {
   nextGame() {
     this.socket.nextGame();
   }
+
+  endTurn() {
+    let me = find(this.room.players, (p) => p.name === this.userName);
+    if (this.isCaptain) {
+      return;
+    }
+    const allowed = this.room.activeTeam === 'red' ? this.room.teamRed : this.room.teamBlue;
+    if (!allowed.includes(me.id)) {
+      return;
+    }
+    this.socket.nextTurn();
+  }
 }

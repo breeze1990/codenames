@@ -54,4 +54,8 @@ export class SocketClientService {
   nextGame() {
     this.socket.emit('next_game');
   }
+
+  nextTurn() {
+    this.socket.emit('next_turn');
+  }
 }

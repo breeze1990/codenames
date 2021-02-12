@@ -11,10 +11,13 @@
     flex: 1 1 80%;
     .turn-information {
       padding: 0 15px;
-      &.red {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .red {
         color: red;
       }
-      &.blue {
+      .blue {
         color: blue;
       }
     }
