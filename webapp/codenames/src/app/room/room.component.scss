@@ -23,15 +23,19 @@
     }
     .row {
       display: flex;
+      flex-wrap: wrap;
       .cell {
-        flex: 1 1 200px;
+        flex: 1 1 auto;
         height: 80px;
         line-height: 80px;
         text-align: center;
         padding: 15px;
-        cursor: pointer;
+        
         div {
           background-color: #efefef;
+          cursor: pointer;
+          min-width: 80px;
+          overflow: hidden;
         }
 
         &.captain {
