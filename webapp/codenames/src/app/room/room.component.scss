@@ -1,5 +1,11 @@
 @import "variables";
 
+@media only screen and (max-width: 899px) {
+  .container {
+    flex-direction: column-reverse;
+  }
+}
+
 .room-container {
   display: grid;
   height: 100%;
@@ -93,5 +99,11 @@
   }
   .player-section {
     flex: 0 0 300px;
+
+    .team-info {
+      border: 1px solid $grey1;
+      margin-bottom: 10px;
+      padding: 0 0 10px 0;
+    }
   }
 }

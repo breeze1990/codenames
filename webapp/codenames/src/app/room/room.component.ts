@@ -31,7 +31,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     private cookie: CookieService,
     private store: Store<{ room: any }>
   ) {
-    this.userName = this.cookie.get(USER_NAME_COOKIE) || '';
+    this.userName = this.cookie.get(USER_NAME_COOKIE) || 'anonymous';
     this.userNameInput.setValue(this.userName);
     this.room$ = store.pipe(select('room'));
     this._subscriptions.add(
@@ -74,7 +74,10 @@ export class RoomComponent implements OnInit, OnDestroy {
       teamPlayers = this.room.teamBlue;
       captain = this.room.teamBlueCaptain;
     }
-    let me = find(this.room.players, (p) => p.name === this.userName);
+    let me = this.findSelf();
+    if (!me) {
+      return;
+    }
     if (!find(teamPlayers, (id) => id === me.id)) {
       // not in the team, cannot commandeer
       return;
@@ -93,11 +96,18 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.socket.updateUserName(this.userName);
   }
 
+  findSelf() {
+    return find(this.room.players, (p) => p.id === this.socket.socketId);
+  }
+
   selectCard(cell: Word) {
     if (cell.selected) {
       return;
     }
-    let me = find(this.room.players, (p) => p.name === this.userName);
+    let me = this.findSelf();
+    if (!me) {
+      return;
+    }
     if (
       me.name === this.room.teamBlueCaptain ||
       me.name === this.room.teamRedCaptain
@@ -106,7 +116,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
     const allowed =
       this.room.activeTeam === 'red' ? this.room.teamRed : this.room.teamBlue;
-    console.log(allowed, me);
     if (!allowed.includes(me.id)) {
       return;
     }
@@ -118,8 +127,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   endTurn() {
-    let me = find(this.room.players, (p) => p.name === this.userName);
-    if (this.isCaptain) {
+    let me = this.findSelf();
+    if (!me || this.isCaptain) {
       return;
     }
     const allowed = this.room.activeTeam === 'red' ? this.room.teamRed : this.room.teamBlue;

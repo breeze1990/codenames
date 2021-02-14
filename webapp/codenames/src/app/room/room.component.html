@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="player-section">
-      <div>
+      <div style="margin-bottom: 10px;">
         Hello {{ userName }}
         <mat-icon (click)="showUserNameInput()" class="clickable">create
         </mat-icon>
@@ -38,7 +38,7 @@
         </mat-form-field>
         <button mat-button (click)="updateUserName()">Submit</button>
       </div>
-      <div>
+      <div class="team-info">
         <mat-toolbar>
           <button mat-icon-button (click)="joinTeam('ob')">
             <mat-icon>group_add</mat-icon>
@@ -49,7 +49,7 @@
           {{ room.players[obId].name }}
         </div>
       </div>
-      <div>
+      <div class="team-info">
         <mat-toolbar>
           <button mat-icon-button (click)="joinTeam('red')">
             <mat-icon>group_add</mat-icon>
@@ -67,7 +67,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="team-info">
         <mat-toolbar>
           <button mat-icon-button (click)="joinTeam('blue')">
             <mat-icon>group_add</mat-icon>

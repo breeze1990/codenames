@@ -13,7 +13,6 @@ export class SocketClientService {
   public socketId: any;
   constructor(private socket: Socket, private store: Store<{ room: any }>) {
     this.socket.on('socket_id', (id) => {
-      console.log('id', id);
       this.socketId = id;
     });
   }
