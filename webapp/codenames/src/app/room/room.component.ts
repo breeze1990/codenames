@@ -24,6 +24,19 @@ export class RoomComponent implements OnInit, OnDestroy {
   _subscriptions = new Subscription();
   userNameInputSwitch = false;
   isCaptain = false;
+  roomStats: {
+    remaining: {
+      red: number,
+      blue: number
+    },
+    winner: string
+  } = {
+      remaining: {
+        red: 0,
+        blue: 0
+      },
+      winner: ''
+    };
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,7 +49,29 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.room$ = store.pipe(select('room'));
     this._subscriptions.add(
       this.room$.subscribe((room) => {
-        this.room = room;
+        this.room = new RoomMetadata(room);
+        this.roomStats.remaining.red = 0;
+        this.roomStats.remaining.blue = 0;
+        this.roomStats.winner = '';
+        this.room.words.forEach(row => {
+          row.forEach(word => {
+            if (!word.selected && word.team === 'blue') {
+              this.roomStats.remaining.blue++;
+            }
+            if (!word.selected && word.team === 'red') {
+              this.roomStats.remaining.red++;
+            }
+            if (word.selected && word.team === 'assassin') {
+              console.log(word);
+              this.roomStats.winner = this.room.activeTeam;
+            }
+          });
+        });
+        if (this.roomStats.remaining.blue === 0) {
+          this.roomStats.winner = 'blue';
+        } else if (this.roomStats.remaining.red === 0) {
+          this.roomStats.winner = 'red';
+        }
         this.isCaptain =
           this.socket.socketId === room.teamRedCaptain ||
           this.socket.socketId === room.teamBlueCaptain;
@@ -101,6 +136,9 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   selectCard(cell: Word) {
+    if (!!this.roomStats.winner) {
+      return;
+    }
     if (cell.selected) {
       return;
     }

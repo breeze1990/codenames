@@ -8,7 +8,7 @@ export class RoomMetadata {
   teamBlueCaptain: string = '';
   teamRed: Player[] = [];
   teamRedCaptain: string = '';
-  words: string[][] = [];
+  words: any[][] = [];
   activeTeam: string;
 
   constructor(room) {

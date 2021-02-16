@@ -26,6 +26,8 @@ export class Game {
   reset(words) {
     this.words = words;
     this.activeTeam = Team.RED;
+    this.teamRedCaptain = '';
+    this.teamBlueCaptain = '';
   }
 
   addPlayer(player) {
@@ -97,7 +99,6 @@ export class Game {
   }
 
   selectWord({ id, word }) {
-    // TODO: check to change activeTeam
     let itemTeam;
     for (let row of this.words) {
       for (let item of row) {

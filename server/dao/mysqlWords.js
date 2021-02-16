@@ -29,7 +29,7 @@ export function getWords(row, col) {
       }
       // form the matrix
       const total = row * col;
-      const blue = Math.floor((total * 0.6) / 2);
+      const blue = Math.floor((total * 0.6) / 2) + 1;
       const red = blue + 1;
       let teamAssign = Array(total).fill(Team.NEUTRAL);
       for (let i = 0; i < red; i++) {

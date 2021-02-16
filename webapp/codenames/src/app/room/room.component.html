@@ -3,16 +3,29 @@
   <div [hidden]="true">
     {{ room$ | async | json }}
   </div>
+  <div [hidden]="true">
+    {{ roomStats | json }}
+  </div>
   <div class="container">
     <div class="word-section">
       <div class="turn-information">
-        <div [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}">{{ room.activeTeam }}</div>
+        <div>
+          <span [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}"
+            *ngIf="!roomStats.winner">
+            {{ room.activeTeam }}</span>
+          <span [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}"
+            *ngIf="roomStats.winner">{{ roomStats.winner }} wins!</span>
+          <span style="margin-left: 20px" class="turn-stats red">{{ roomStats.remaining.red }}</span>
+          <span class="turn-stats">-</span>
+          <span class="turn-stats blue">{{ roomStats.remaining.blue }}</span>
+        </div>
         <button mat-stroked-button (click)="endTurn()"
           [ngClass]="{ red: room.activeTeam === 'red', blue: room.activeTeam === 'blue'}">End</button>
       </div>
       <div class="word-cells">
         <div class="row" *ngFor="let row of room.words">
-          <div class="cell" [ngClass]="{ captain: isCaptain }" (click)="selectCard(cell)" *ngFor="let cell of row">
+          <div class="cell" [ngClass]="{ captain: isCaptain, reveal: !!roomStats.winner }" (click)="selectCard(cell)"
+            *ngFor="let cell of row">
             <div [ngClass]="{
                 selected: cell.selected,
                 red: cell.team === 'red',
